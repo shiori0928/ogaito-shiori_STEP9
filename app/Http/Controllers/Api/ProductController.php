@@ -11,10 +11,9 @@ class ProductController extends Controller
 {
     public function purchase(Request $request, $id)
     {
-    
-         $product = Product::find($id);
- 
-         $quantity = $request->input('quantity');
+        $product = Product::find($id);
+
+        $quantity = $request->input('quantity');
 
         // 在庫チェック
         if ($product->stock < $quantity) {
@@ -23,9 +22,9 @@ class ProductController extends Controller
             ], 400);
         }
 
-        // 注文作成（※一旦 user_id 固定）
+        // 注文作成
         $order = Order::create([
-            'user_id' => 2,
+            'user_id' => auth()->id(),
             'total_price' => $product->price * $quantity,
             'product_name' => $product->name,
             'product_description' => $product->description,

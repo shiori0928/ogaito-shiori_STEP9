@@ -2,9 +2,15 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\ProductController;
+use App\Http\Controllers\Api\AuthController;
 
-Route::post('/products/{product}/purchase', [ProductController::class, 'purchase']);
+// ログインAPI
+Route::post('/login', [AuthController::class, 'login']);
 
-Route::get('/test', function () {
-    return 'OK';
+// 認証必要API
+Route::middleware('auth:sanctum')->group(function () {
+
+    Route::post('/products/{product}/purchase',
+        [ProductController::class, 'purchase']);
+
 });
